@@ -134,21 +134,19 @@ class Swimming(Training):
         calorie_2 = 2
         return ((self.get_mean_speed() + calorie_1)
                 * calorie_2 * self.weight)
-
+                                              
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    trainings: dict[str, Training] = {'SWM': Swimming, 
-                                      'RUN': Running, 
-                                      'WLK': SportsWalking}                           
-    if workout_type in trainings:
-        workout = trainings[workout_type](*data)
-        return workout
+    trainings: dict[str, type[Training]] = {'SWM': Swimming,
+                                        'RUN': Running,
+                                        'WLK': SportsWalking}                       
+    return trainings[workout_type](*data)
 
-def main(training: Training):
+def main(training: Training) -> None:
     """Главная функция."""
     info = training.show_training_info()
     print(info.get_message())
-    
+
 if __name__ == '__main__':
     packages = [
         ('SWM', [720, 1, 80, 25, 40]),
